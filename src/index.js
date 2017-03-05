@@ -7,6 +7,7 @@ const
 			selectN = array_utils.selectN,
 			shuffle = array_utils.shuffle;
 
+const testIterations = 100000;
 
 function generateTestData(count) {
 	function generateDatum() {
@@ -67,7 +68,14 @@ let happy = ent => ent.happy;
 let capitaliseName = ent => { ent.name = ent.name.toUpperCase(); return ent; };
 let capitaliseFriends = ent => { ent.friends = ent.friends.map(str => String.prototype.toUpperCase.call('' + str)); return ent; }
 
-let happyCapitals = testData.filter(happy).map(capitaliseName).map(capitaliseFriends);
+
+let happyCapitals;
+
+console.time(chalk.magenta('normal'));
+for (var i=0; i < testIterations; i++) {
+	happyCapitals = testData.filter(happy).map(capitaliseName).map(capitaliseFriends);
+}
+console.timeEnd(chalk.magenta('normal'));
 
 console.log(chalk.green('\n\n## Normal approach: happy capitals ##\n'));
 console.log(happyCapitals);
@@ -85,14 +93,14 @@ class Lazify {
 		this.actions.push(['map', fn]);
 		return this;
 	}
-	run() {
-		console.log(chalk.yellow('## running'));
-		console.log(this.actions);
+	compile() {
+		// console.log(chalk.yellow('## running'));
+		// console.log(this.actions);
 		let actionFunc = this._compile();
-		console.log(chalk.yellow('## compiled func'));
-		console.log(actionFunc.toString());
-		console.log(chalk.yellow('## returning result'));
-		return actionFunc(this.arr);
+		// console.log(chalk.yellow('## compiled func'));
+		// console.log(actionFunc.toString());
+		// console.log(chalk.yellow('## returning result'));
+		return actionFunc;
 	}
 	_compile() {
 		let result = [];
@@ -156,7 +164,13 @@ let lazy = new Lazify(testData)
 	.map(capitaliseName)
 	.map(capitaliseFriends);
 
-let results = lazy.run();
+let results;
+let compiled = lazy.compile();
+console.time(chalk.magenta('compiled'));
+for (var i=0; i < testIterations; i++) {
+	results = compiled(testData);
+}
+console.timeEnd(chalk.magenta('compiled'));
 
 console.log(chalk.green('## compiled result'));
 console.log(results);
