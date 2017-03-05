@@ -64,9 +64,8 @@ console.log(fixed);
  */
 
 let happy = ent => ent.happy;
-let capitalise = str => String.prototype.toUpperCase.call('' + str);
-let capitaliseName = ent => { ent.name = capitalise(ent.name); return ent; };
-let capitaliseFriends = ent => { ent.friends = ent.friends.map(capitalise); return ent; }
+let capitaliseName = ent => { ent.name = ent.name.toUpperCase(); return ent; };
+let capitaliseFriends = ent => { ent.friends = ent.friends.map(str => String.prototype.toUpperCase.call('' + str)); return ent; }
 
 let happyCapitals = testData.filter(happy).map(capitaliseName).map(capitaliseFriends);
 
