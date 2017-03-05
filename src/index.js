@@ -86,10 +86,12 @@ class Lazify {
 		return this;
 	}
 	run() {
-		console.log(chalk.yellow('running'));
+		console.log(chalk.yellow('## running'));
 		console.log(this.actions);
 		let actionFunc = this._compile();
+		console.log(chalk.yellow('## compiled func'));
 		console.log(actionFunc.toString());
+		console.log(chalk.yellow('## returning result'));
 		return actionFunc(this.arr);
 	}
 	_compile() {
@@ -152,5 +154,9 @@ class Lazify {
 let lazy = new Lazify(testData)
 	.filter(happy)
 	.map(capitaliseName)
-	.map(capitaliseFriends)
-	.run();
+	.map(capitaliseFriends);
+
+let results = lazy.run();
+
+console.log(chalk.green('## compiled result'));
+console.log(results);
